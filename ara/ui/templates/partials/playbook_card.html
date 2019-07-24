@@ -8,11 +8,11 @@
 {% else %}
 <div class="pf-c-card pf-m-hoverable pf-c-alert pf-m-warning pf-m-inline">
 {% endif %}
-    <ul class="pf-c-data-list" role="list">
+    <ul class="pf-c-data-list pf-m-compact" role="list">
         <li class="pf-c-data-list__item">
             <div class="pf-c-data-list__item-row">
                 <div class="pf-c-data-list__item-control">
-                    {% include "partials/status_icon.html" with status=playbook.status %}
+                    {% include "partials/playbook_status.html" with status=playbook.status %}
                 </div>
                 <div class="pf-c-data-list__item-content">
                     <div class="pf-c-data-list__cell pf-m-flex-1">

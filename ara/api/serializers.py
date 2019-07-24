@@ -186,7 +186,7 @@ class NestedPlaybookRecordSerializer(serializers.ModelSerializer):
         exclude = ("playbook", "value", "created", "updated")
 
 
-class NestedPlaybookPlaySerializer(DurationSerializer):
+class NestedPlaybookPlaySerializer(DurationSerializer, ItemCountSerializer):
     class Meta:
         model = models.Play
         exclude = ("playbook", "uuid", "created", "updated")

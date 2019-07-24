@@ -1,0 +1,21 @@
+{% if result.changed or result.status == "ignored" %}
+<td class="pf-c-alert pf-m-warning pf-m-inline pf-c-alert__icon" style="width:5px;">
+    {% include "partials/result_status_icon.html" %}
+</td>
+{% elif result.status == "ok" %}
+<td class="pf-c-alert pf-m-success pf-m-inline pf-c-alert__icon" style="width:5px;">
+    {% include "partials/result_status_icon.html" %}
+</td>
+{% elif result.status == "skipped" %}
+<td class="pf-c-alert pf-m-info pf-m-inline pf-c-alert__icon" style="width:5px;">
+    {% include "partials/result_status_icon.html" %}
+</td>
+{% elif result.status == "failed" or result.status == "unreachable" %}
+<td class="pf-c-alert pf-m-danger pf-m-inline pf-c-alert__icon" style="width:5px;">
+    {% include "partials/result_status_icon.html" %}
+</td>
+{% else %}
+<td class="pf-c-alert pf-m-inline pf-c-alert__icon" style="width:5px;">
+    {% include "partials/result_status_icon.html" %}
+</td>
+{% endif %}

@@ -1,0 +1,13 @@
+{% if result.status == "ignored" %}
+<i class="fas fa-info-circle" aria-hidden="true" title="Task failed but was ignored for this host"></i>
+{% elif result.status == "failed" or result.status == "unreachable" %}
+<i class="fas fa-exclamation-circle" aria-hidden="true" title="Task failed for this host"></i>
+{% elif result.changed %}
+<i class="fas fa-sync" aria-hidden="true" title="Task successfully changed for this host"></i>
+{% elif result.status == "ok" %}
+<i class="fas fa-check-circle" aria-hidden="true" title="Task completed successfully for this host"></i>
+{% elif result.status == "skipped" %}
+<i class="fas fa-forward" aria-hidden="true" title="Task was skipped for this host"></i>
+{% else %}
+<i class="fas fa-question-circle" aria-hidden="true" title="Task status is unknown for this host"></i>
+{% endif %}

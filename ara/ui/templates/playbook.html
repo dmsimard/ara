@@ -71,45 +71,85 @@
                 </tbody>
             </table>
         </details>
-        <details id="results" open="true">
-            <summary>Task results</summary>
-            <table class="pf-c-table pf-m-grid-md pf-m-compact" role="grid" id="result-table">
-                <thead>
-                    <tr>
-                        <th>Task</th>
-                        <th>Action</th>
-                        <th>Status</th>
-                        <th>Changed</th>
-                        <th>Host</th>
-                        <th>Path</th>
-                        <th>Handler</th>
-                        <th>Started</th>
-                        <th>Duration</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for play in playbook.plays %}
-                    {% for task in play.tasks %}
-                    {% for result in task.results %}
-                    <tr>
-                        <td><a href="../result/{{ result.id }}.html">{{ task.name }}</a></td>
-                        <td>{{ task.action }}</td>
-                        <td>{{ result.status }}</td>
-                        <td>{{ result.changed }}</td>
-                        <td>{{ result.host.name }}</td>
-                        <td>
-                            <a href="../file/{{ task.file.id }}.html">{{ task.file.path | truncatechars:30 }}:{{ task.lineno }}</a>
-                        </td>
-                        <td>{{ task.handler }}</td>
-                        <td>{{ result.started | format_date }}</td>
-                        <td>{{ result.duration | format_duration }}</td>
-                    </tr>
-                    {% endfor %}
-                    {% endfor %}
-                    {% endfor %}
-                </tbody>
-            </table>
-        </details>
+    </div>
+</div>
+
+<div class="pf-c-card" style="margin: 1em 0;">
+    <div class="pf-c-card__header pf-c-title pf-m-md" id="results">
+        <a href="#results">Task results</a>
+    </div>
+    <div class="pf-c-card__body">
+        <!-- Play table -->
+        {% for play in playbook.plays %}
+        <table class="pf-c-table pf-m-grid-md pf-m-compact" role="grid">
+            <tbody>
+                <tr>
+                    <td>
+                        <details open=true id="play-{{ play.id }}" class="pf-c-card pf-m-hoverable">
+                            <summary><a href="#play-{{ play.id }}">Play</a>: {% if play.name %}{{ play.name }}{% else %}#{{ forloop.counter }}{% endif %}</summary>
+                            {% if not play.tasks %}
+                                No tasks have been recorded for this play.
+                            {% else %}
+                            {% for task in play.tasks %}
+                                <!-- Task table -->
+                                <table class="pf-c-table pf-m-grid-md pf-m-compact" role="grid">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <details open="true" id="task-{{ task.id }}" class="pf-c-card pf-m-hoverable">
+                                                    <summary>
+                                                        <a href="#task-{{ task.id }}">Task</a>: {% if task.name %}{{ task.name }}{% else %}#{{ forloop.counter }}{% endif %}
+                                                        (<a href="{% if page != "index" %}../{% endif %}file/{{ task.file.id }}.html#line-{{ task.lineno }}">{{ task.action }}</a>)
+                                                    </summary>
+                                                    <!-- Task results table -->
+                                                    {% if not task.results %}
+                                                        No results have been recorded for this task.
+                                                    {% else %}
+                                                        <div class="pf-l-grid">
+                                                            <div class="pf-l-grid__item pf-m-8-col">
+                                                                <table class="pf-c-table pf-m-grid-md pf-m-compact" role="grid">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class=""></th>
+                                                                            <th>Host</th>
+                                                                            <th>Status</th>
+                                                                            <th>Changed</th>
+                                                                            <th>ignore_errors</th>
+                                                                            <th>Duration</th>
+                                                                            <th>Ended</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {% for result in task.results %}
+                                                                        <tr>
+                                                                            {% include "partials/result_status.html" %}
+                                                                            <td><a href="../result/{{ result.id }}.html">{{ result.host.name }}</a></td>
+                                                                            <td>{{ result.status }}</td>
+                                                                            <td>{{ result.changed }}</td>
+                                                                            <td>{{ result.ignore_errors }}</td>
+                                                                            <td>{{ result.duration | format_duration }}</td>
+                                                                            <td>{{ result.ended | format_date }}</td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                    </div>
+                                                </details>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            {% endfor %}
+                            {% endif %}
+                        </details>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
