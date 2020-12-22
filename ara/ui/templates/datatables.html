@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Rolling Stone Top 500 albums of all time</title>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css">
+  <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <table id="playbooks" class="table table-striped table-bordered" style="width:100%">
+          <thead>
+            <tr>
+              <th>Created</th>
+              <th>Status</th>
+              <th>Duration</th>
+              <th>Controller</th>
+              <th>Ansible version</th>
+              <th>Path</th>
+              <th>Hosts</th>
+              <th>Tasks</th>
+              <th>Results</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+  <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+  <script>
+      $(document).ready(function() {
+          var table = $('#playbooks').DataTable({
+              "serverSide": true,
+              "ajax": "{% url 'playbook-list' %}?format=datatables",
+              "columns": [
+                  {"data": "created"},
+                  {"data": "status"},
+                  {"data": "duration"},
+                  {"data": "controller"},
+                  {"data": "ansible_version"},
+                  {"data": "path"},
+                  {"data": "items.hosts", "searchable": false, "orderable": false},
+                  {"data": "items.tasks", "searchable": false, "orderable": false},
+                  {"data": "items.results", "searchable": false, "orderable": false},
+              ]
+          });
+      });
+  </script>
+</body>
+</html>

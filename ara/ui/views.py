@@ -1,5 +1,6 @@
 import codecs
 
+from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
@@ -56,6 +57,11 @@ class Index(generics.ListAPIView):
                 "current_page_results": current_page_results,
             }
         )
+
+
+class PlaybookDatatables(generics.ListAPIView):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'datatables.html')
 
 
 class Playbook(generics.RetrieveAPIView):
