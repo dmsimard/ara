@@ -30,6 +30,11 @@ try:
 except ImportError:
     import yaml
 
+
+# Where this package has been installed
+INSTALL_DIR = os.path.dirname(os.path.dirname(__file__))
+
+# Where settings and sqlite databases are saved
 BASE_DIR = os.environ.get("ARA_BASE_DIR", os.path.expanduser("~/.ara/server"))
 DEFAULT_SETTINGS = os.path.join(BASE_DIR, "settings.yaml")
 
@@ -180,10 +185,11 @@ MIDDLEWARE = [
 ]
 # fmt: on
 
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [ os.path.join(INSTALL_DIR, 'api/templates') ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
