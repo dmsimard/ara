@@ -225,6 +225,7 @@ class CallbackModule(CallbackBase):
         self.ignored_files = []
         self.localhost_as_hostname = None
         self.localhost_as_hostname_format = None
+        self.warned_about_host_length = []
 
         self.result = None
         self.result_started = {}
@@ -532,6 +533,15 @@ class CallbackModule(CallbackBase):
         # so that we can differentiate between different actual hosts
         if self.localhost_as_hostname and host in ["localhost", "127.0.0.1"]:
             host = self.localhost_hostname
+
+        # Ansible inventory hostnames can be longer than 255 characters
+        # https://github.com/ansible-community/ara/issues/265
+        if len(host) >= 255:
+            # Only warn about this once so we don't print a warning on every task
+            if host not in self.warned_about_host_length:
+                self.log.warn("Truncating hostname before recording: it's longer than 255 characters (%s)" % host)
+                self.warned_about_host_length.append(host)
+            host = host[:254]
 
         if host not in self.host_cache:
             self.log.debug("Host not in cache, getting or creating: %s" % host)
