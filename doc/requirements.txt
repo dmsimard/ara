@@ -6,3 +6,6 @@ sphinxcontrib-programoutput
 # the docs include snippets from ara --help commands
 # ara needs to be installed so sphinxcontrib-programoutput can retrieve them
 ara[server]
+
+# for the "ara prometheus" exporter CLI command
+prometheus_client
