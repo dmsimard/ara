@@ -35,8 +35,15 @@
     margin-bottom: 3px;
 }
 
+.ara-playbook-status-badge {
+    padding-top: 0.05rem !important;
+    padding-bottom: 0.25rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
+
 .ara-result-status-badge {
-    font-size: 90% !important;
+    padding: 0.05rem 0.30rem !important;
 }
 
 /* Size and text formatting on some table columns */
