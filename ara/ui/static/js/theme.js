@@ -26,8 +26,12 @@ const setTheme = theme => {
   }
   if (theme === 'light') {
     document.getElementById('dark-light-toggle-btn').removeAttribute('checked')
+    document.getElementById("pygments-dark-css").disabled = true;
+    document.getElementById("pygments-light-css").disabled = false;
   } else {
     document.getElementById('dark-light-toggle-btn').setAttribute('checked', 'true')
+    document.getElementById("pygments-dark-css").disabled = false;
+    document.getElementById("pygments-light-css").disabled = true;
   }
 }
 

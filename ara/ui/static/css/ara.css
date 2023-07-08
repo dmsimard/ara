@@ -46,6 +46,27 @@
     padding: 0.05rem 0.30rem !important;
 }
 
+.ara-playbook-card-table td {
+    border-bottom: none !important;
+}
+
+.card-header {
+    padding: 0.3rem 1.0rem !important;
+    height: 50px;
+}
+
+.card-footer {
+    padding: 0.3rem 1.0rem !important;
+}
+
+.card-border-left {
+    border-left: 1px solid #444;
+}
+
+.card-border-right {
+    border-right: 1px solid #444;
+}
+
 /* Size and text formatting on some table columns */
 .report-column {
     width: 60px;

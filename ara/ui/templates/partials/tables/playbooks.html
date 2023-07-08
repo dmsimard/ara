@@ -10,8 +10,12 @@
         <th class="report-column" title="Link to the playbook report">Report</th>
         <th class="short-status-column" title="Status of the playbook run">Status</th>
         <th class="cli-column" title="CLI arguments given to the ansible command">CLI</th>
-        <th class="date-column" title="Date at which the playbook started">{% include "partials/sort_by_date.html" with arg="started" form_url="ui:index" %}</th>
-        <th class="duration-column" title="Duration of the playbook (HH:MM:SS.ms)">{% include "partials/sort_by_duration.html" with form_url="ui:index" %}</th>
+        <th class="date-column" title="Date at which the playbook started">
+          <form action="{% url 'ui:index' %}" method="get">{% include "partials/sort_by_date.html" with arg="started" %}</form>
+        </th>
+        <th class="duration-column" title="Duration of the playbook (HH:MM:SS.ms)">
+          <form action="{% url 'ui:index' %}" method="get">{% include "partials/sort_by_duration.html" %}</form>
+        </th>
         <th title="Name (provided by ara_playbook_name) or path to the playbook file">Name (or path)</th>
         <th class="text-center" title="Version of Ansible that ran the playbook">Ansible</th>
         <th class="text-center" title="Host that ran the playbook">Controller</th>
@@ -50,7 +54,7 @@
             <div class="modal-dialog modal-dialog-centered modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="aboutModalLabel">CLI arguments (playbook #<a href="{% static_url playbook_url %}">{{ playbook.id }}</a>)</h1>
+                  <h1 class="modal-title fs-5" id="aboutModalLabel">Playbook <a href="{% static_url playbook_url %}">#{{ playbook.id }}</a>: CLI Arguments</h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="text-align:left;">

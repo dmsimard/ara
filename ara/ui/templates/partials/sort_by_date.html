@@ -1,4 +1,3 @@
-<form action="{% url form_url %}" method="get">
 Date
 {% if not static_generation %}
   {% if request.GET.order == "-"|add:arg %}
@@ -28,4 +27,3 @@ Date
     </button>
   {% endif %}
 {% endif %}
-</form>
