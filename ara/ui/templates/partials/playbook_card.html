@@ -3,15 +3,19 @@
 {% load static_url %}
 <div class="card">
   <div class="card-header bg-body-tertiary">
-    <div class="row">
-      <div class="col-md-2">
-        <h3>Playbook #{{ playbook.id }}</h3>
-      </div>
-      <div class="col-md-10">
-        <h3 style="text-align:right !important;">
-          {% if playbook.name is not None %}{{ playbook.name | truncatechars:100 }}: {{ playbook.path | truncatepath:150 }}{% else %}{{ playbook.path | truncatepath:250 }}{% endif %}
-        </h3>
-      </div>
+    <div class="table-responsive">
+      <table class="table table-borderless text-nowrap">
+        <tbody>
+          <tr>
+            <td class="bg-transparent"><h3>Playbook #{{ playbook.id }}</h3></td>
+            <td class="bg-transparent">
+              <h3 style="text-align:right !important;">
+                {% if playbook.name is not None %}{{ playbook.name | truncatechars:50 }}: {{ playbook.path | truncatepath:75 }}{% else %}{{ playbook.path | truncatepath:125 }}{% endif %}
+              </h3>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
   <div class="card-body text-info" style="max-height:100px;">
