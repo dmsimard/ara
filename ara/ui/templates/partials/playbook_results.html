@@ -94,7 +94,7 @@
                   </td>
 
                   <td class="single-pill-column">
-                    <span class="badge badge-pill badge-secondary" class="btn btn-secondary" data-toggle="tooltip"  data-placement="right" data-html="true" title="{% if result.task.tags %}{% include 'partials/tags_list.html' with tags=result.task.tags %}{% endif %}">
+                    <span class="btn btn-secondary btn-sm d-inline-flex justify-content-center align-items-center ara-result-status-badge" {% if result.task.tags %}data-bs-toggle="tooltip"  data-bs-placement="left" data-bs-html="true" data-bs-title="{% include 'partials/tags_list.html' with tags=result.task.tags %}{% endif %}">
                       {{ result.task.tags | length }}
                     </span>
                   </td>
@@ -120,8 +120,3 @@
   </div>
 </div>
 <br/>
-<script>
-  $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-  })
-</script>

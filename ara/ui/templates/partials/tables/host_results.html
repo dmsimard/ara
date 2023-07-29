@@ -83,6 +83,7 @@
                       </svg>
                     </a>
                   </td>
+
                   <td class="medium-status-column">
                     {% if not static_generation %}
                       {% url 'ui:host' host.id as host_url %}
@@ -91,8 +92,10 @@
                       {% include "partials/result_status_icon.html" with status=result.status %}
                     {% endif %}
                   </td>
+
                   <td class="date-column">{{ result.started | format_date }}</td>
                   <td class="duration-column">{{ result.duration | format_duration }}</td>
+
                   <td>
                     {{ host.name | truncatechars:50 }}
                     {% if result.delegated_to %}
@@ -104,6 +107,7 @@
                       </span>
                     {% endif %}
                   </td>
+
                   <td nowrap>
                     {% if not static_generation %}
                       {% url 'ui:file' result.task.file as file_url %}
@@ -112,6 +116,7 @@
                       {{ result.task.action }}
                     {% endif %}
                   </td>
+
                   <td>
                     {% if not static_generation %}
                       <a href="{% static_url playbook_url %}?task_name={{ result.task.name }}#results">{{ result.task.name }}</a>
@@ -119,8 +124,9 @@
                       {{ result.task.name }}
                     {% endif %}
                   </td>
+
                   <td class="single-pill-column">
-                    <span class="badge badge-pill badge-secondary" class="btn btn-secondary" data-toggle="tooltip"  data-placement="right" data-html="true" title="{% if result.task.tags %}{% include 'partials/tags_list.html' with tags=result.task.tags %}{% endif %}">
+                    <span class="btn btn-secondary btn-sm d-inline-flex justify-content-center align-items-center ara-result-status-badge" {% if result.task.tags %}data-bs-toggle="tooltip"  data-bs-placement="left" data-bs-html="true" data-bs-title="{% include 'partials/tags_list.html' with tags=result.task.tags %}{% endif %}">
                       {{ result.task.tags | length }}
                     </span>
                   </td>
@@ -145,8 +151,3 @@
     </form>
   </div>
 </div>
-<script>
-  $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-  })
-</script>

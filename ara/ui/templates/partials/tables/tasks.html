@@ -85,7 +85,7 @@
         {% endif %}
 
         <td class="single-pill-column">
-          <span class="btn btn-secondary btn-sm d-inline-flex justify-content-center align-items-center ara-result-status-badge" data-toggle="tooltip"  data-placement="right" data-html="true" title="{% if task.tags %}{% include 'partials/tags_list.html' with tags=task.tags %}{% endif %}">
+          <span class="btn btn-secondary btn-sm d-inline-flex justify-content-center align-items-center ara-result-status-badge" {% if task.tags %}data-bs-toggle="tooltip"  data-bs-placement="left" data-bs-html="true" data-bs-title="{% include 'partials/tags_list.html' with tags=task.tags %}{% endif %}">
             {{ task.tags | length }}
           </span>
         </td>
