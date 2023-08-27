@@ -2,13 +2,14 @@
 {% load pygments_highlights %}
 {% load truncatepath %}
 
-{% block title %}| File #{{ file.id }}: {{ file.path | truncatepath:75 }}{% endblock %}
+{% block title %}| File #{{ file.id }}: {{ file.path | truncatepath:75 }}{% endblock title %}
 {% block body %}
-  <div>
-    {% include "partials/playbook_card.html" with playbook=file.playbook %}
-  </div>
-  <br/>
-  <div>
+
+<div>
+  {% include "partials/playbook_card.html" with playbook=file.playbook %}
+</div>
+<br/>
+<div>
   <div class="card">
     <div class="card-header bg-body-tertiary">
       <h4>File: {{ file.path }}</h4>
@@ -17,7 +18,7 @@
       {{ file.content | format_yaml | safe }}
     </div>
   </div>
-  <br/>
+</div>
 
 <!-- Line highlighting -->
 <script>
@@ -48,4 +49,4 @@
   });
 </script>
 
-{% endblock %}
+{% endblock body %}

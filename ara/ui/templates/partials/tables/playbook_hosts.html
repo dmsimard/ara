@@ -17,11 +17,11 @@
         {% if playbook.items.hosts %}
           <table class="table table-sm table-hover">
             <thead>
-            <tr>
-              <th class="report-column" title="Host results and facts (if facts were gathered)">Report</th>
-              <th class="long-status-column" title="Status of the tasks for each host">Status</th>
-              <th title="Host name">Hostname</th>
-            </tr>
+              <tr>
+                <th class="report-column" title="Host results and facts (if facts were gathered)">Report</th>
+                <th class="long-status-column" title="Status of the tasks for each host">Status</th>
+                <th title="Host name">Hostname</th>
+              </tr>
             </thead>
             <tbody>
             {% for host in hosts %}

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}| Tasks{% if not static_generation %}: {{ current_page_results }} of {{ data.count }}{% endif %}{% endblock %}
+{% block title %}| Tasks{% if not static_generation %}: {{ current_page_results }} of {{ data.count }}{% endif %}{% endblock title %}
 {% block body %}
 
 {% include "partials/search/tasks.html" %}
@@ -25,4 +25,4 @@
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
 
-{% endblock %}
+{% endblock body %}

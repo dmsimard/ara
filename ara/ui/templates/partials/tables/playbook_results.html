@@ -79,7 +79,7 @@
                   <td nowrap>
                     {% if not static_generation %}
                       {% url 'ui:file' result.task.file as file_url %}
-                      <a href="{% url 'ui:file' result.task.file %}?#line-{{ result.task.lineno }}">{{ result.task.action }}</a>
+                      <a href='{% url "ui:file" result.task.file %}?#line-{{ result.task.lineno }}'>{{ result.task.action }}</a>
                     {% else %}
                       {{ result.task.action }}
                     {% endif %}
@@ -87,7 +87,7 @@
 
                   <td>
                     {% if not static_generation %}
-                      <a href="{% url 'ui:playbook' playbook.id %}?task_name={{ result.task.name }}#results">{{ result.task.name }}</a>
+                      <a href='{% url "ui:playbook" playbook.id %}?task_name={{ result.task.name }}#results'>{{ result.task.name }}</a>
                     {% else %}
                       {{ result.task.name }}
                     {% endif %}
@@ -110,13 +110,12 @@
               <h2>No recorded results found.</h2>
               <h3>The playbook might have been interrupted or is in progress.</h3>
             {% else %}
-              <h3>No results found matching your query: try <a href="{% url 'ui:playbook' playbook.id %}#results">clearing search filters</a>.</h3>
+              <h3>No results found matching your query: try <a href='{% url "ui:playbook" playbook.id %}#results'>clearing search filters</a>.</h3>
             {% endif %}
           </div>
         {% endif %}
       </div>
     </div>
-    </form>
   </div>
 </div>
 <br/>

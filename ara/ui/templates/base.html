@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="ARA Records Ansible">
   <meta name="author" content="https://github.com/ansible-community/ara">
-  <title>ara {% block title %}{% endblock %}</title>
+  <title>ara {% block title %}{% endblock title %}</title>
 
   {% static 'images/favicon.ico' as favicon_url %}
   <link rel="shortcut icon" href="{% static_url favicon_url %}">
@@ -30,7 +30,7 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="{% static_url index_url %}">
       {% static 'images/logo.svg' as logo_url %}
-      <img src="{% static_url logo_url %}" height="45" alt="ARA Records Ansible">
+      <img src="{% static_url logo_url %}" width="114" height="45" alt="ARA Records Ansible">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -91,7 +91,7 @@
 <main role="main">
   <div class="container-fluid">
     {% block body %}
-    {% endblock %}
+    {% endblock body %}
   </div>
 </main>
 </body>

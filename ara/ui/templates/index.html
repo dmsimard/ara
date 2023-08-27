@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}| Playbooks{% if not static_generation %}: {{ current_page_results }} of {{ data.count }}{% endif %}{% endblock %}
+{% block title %}| Playbooks{% if not static_generation %}: {{ current_page_results }} of {{ data.count }}{% endif %}{% endblock title %}
 {% block body %}
 
 {% include "partials/search/playbooks.html" %}
@@ -20,4 +20,4 @@
   {% endif %}
 </div>
 
-{% endblock %}
+{% endblock body %}
