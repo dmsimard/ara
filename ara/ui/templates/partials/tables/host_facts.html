@@ -1,48 +1,246 @@
-{% load pygments_highlights %}
-<div class="accordion" id="host_facts">
-  <div class="card">
-    <div class="card-header bg-body-tertiary" id="host_facts_card">
-      <button class="btn ara-card-collapse" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_host_facts" aria-expanded="true" aria-controls="collapse_host_facts">
-        <h4>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-            <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-          </svg>
-          Host facts: {{ host.name | truncatechars:150 }}
-        </h4>
-      </button>
-    </div>
-    <div id="collapse_host_facts" class="collapse show" aria-labelledby="host_facts_card" data-bs-parent="#host_facts" style="overflow-y: auto;">
-      <div class="card-body">
-        {% if host.facts.items %}
-        <div class="table-responsive">
-          <table class="table table-sm table-hover">
-            <thead>
-            <tr>
-              <th style="width:20%;">Fact</th>
-              <th style="width:80%;">Value</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for fact, value in host.facts.items %}
-              <tr>
-                <td id="{{ fact }}" data-label="{{ fact }}">
-                  <a href="#{{ fact }}">{{ fact }}</a>
-                </td>
-                {# Some facts are VERY LONG uninterrupted single lines (looking at you ansible_ssh_host_key_rsa_public) #}
-                <td data-label="Value" style="max-width:400px;">
-                  {{ value | format_data | safe }}
-                </td>
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
+{% load datetime_formatting %}
+{% load number_utils %}
+
+<style>
+[data-bs-theme="dark"] .text-muted {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+[data-bs-theme="dark"] .bg-light {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+[data-bs-theme="dark"] .card {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+</style>
+
+<div class="card">
+    <div class="card-body p-3">
+        <div class="row g-2">
+            <!-- Static System Information -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body p-3">
+                        <!-- Processor -->
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-cpu me-2"></i>
+                                <strong>{{ host.facts.ansible_processor.2 }}</strong>
+                            </div>
+                            <div class="ms-4">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted">Cores:</span>
+                                    <strong>{{ host.facts.ansible_processor_cores }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Threads:</span>
+                                    <strong>{{ host.facts.ansible_processor_nproc }}</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System Details -->
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-gear me-2"></i>
+                                <strong>System</strong>
+                            </div>
+                            <div class="ms-4">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <div>
+                                        <i class="bi bi-clock me-2 text-muted"></i>
+                                        <strong>Uptime:</strong>
+                                    </div>
+                                    <span class="text-muted">{{ host.facts.ansible_uptime_seconds | duration_from_seconds }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <div>
+                                        <i class="bi bi-terminal me-2 text-muted"></i>
+                                        <strong>OS:</strong>
+                                    </div>
+                                    <span class="text-muted">{{ host.facts.ansible_distribution }} {{ host.facts.ansible_distribution_version }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <div>
+                                        <i class="bi bi-gear-wide-connected me-2 text-muted"></i>
+                                        <strong>Kernel:</strong>
+                                    </div>
+                                    <span class="text-muted">{{ host.facts.ansible_kernel }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <i class="bi bi-code-square me-2 text-muted"></i>
+                                        <strong>Python:</strong>
+                                    </div>
+                                    <span class="text-muted">{{ host.facts.ansible_python.version.major }}.{{ host.facts.ansible_python.version.minor }}.{{ host.facts.ansible_python.version.micro }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Network -->
+                        <div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-hdd-network me-2"></i>
+                                <strong>Network</strong>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <i class="bi bi-globe me-2 text-muted"></i>
+                                        <strong>IPv4</strong>
+                                    </div>
+                                    <div class="text-muted small ms-4">
+                                        <div>{{ host.facts.ansible_default_ipv4.address }}</div>
+                                        <div>{{ host.facts.ansible_default_ipv4.interface }}</div>
+                                        <div class="font-monospace">{{ host.facts.ansible_default_ipv4.macaddress|default:"-"|upper }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <i class="bi bi-globe2 me-2 text-muted"></i>
+                                        <strong>IPv6</strong>
+                                    </div>
+                                    <div class="text-muted small ms-4">
+                                        <div>{{ host.facts.ansible_default_ipv6.address|default:"-" }}</div>
+                                        <div>{{ host.facts.ansible_default_ipv6.interface }}</div>
+                                        <div class="font-monospace">{{ host.facts.ansible_default_ipv6.macaddress|default:"-"|upper }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic System Metrics -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body p-3">
+                        <!-- Load Average -->
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-speedometer2 me-2"></i>
+                                <strong>Load Average</strong>
+                            </div>
+                            <div class="row g-2">
+                                {% with load_15=host.facts.ansible_loadavg.15m load_5=host.facts.ansible_loadavg.5m load_1=host.facts.ansible_loadavg.1m %}
+                                <div class="col-4">
+                                    <div class="text-center py-1">
+                                        <div class="text-muted small mb-1">15m</div>
+                                        <div class="fw-bold {% if load_15 > 4 %}text-danger{% elif load_15 > 2 %}text-warning{% else %}text-success{% endif %}">
+                                            {{ load_15 | floatformat:2 }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="text-center py-1">
+                                        <div class="text-muted small mb-1">5m</div>
+                                        <div class="fw-bold {% if load_5 > 4 %}text-danger{% elif load_5 > 2 %}text-warning{% else %}text-success{% endif %}">
+                                            {{ load_5 | floatformat:2 }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="text-center py-1">
+                                        <div class="text-muted small mb-1">1m</div>
+                                        <div class="fw-bold {% if load_1 > 4 %}text-danger{% elif load_1 > 2 %}text-warning{% else %}text-success{% endif %}">
+                                            {{ load_1 | floatformat:2 }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endwith %}
+                            </div>
+                        </div>
+
+                        <!-- Memory -->
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-memory me-2"></i>
+                                    <strong>Memory</strong>
+                                </div>
+                                <small class="text-muted">
+                                    {{ host.facts.ansible_memory_mb.real.used }} MB / {{ host.facts.ansible_memory_mb.real.total }} MB
+                                </small>
+                            </div>
+                            {% with memory_pct=host.facts.ansible_memory_mb.real.used|percentage:host.facts.ansible_memory_mb.real.total %}
+                            <div class="progress mb-1" style="height: 6px;">
+                                <div class="progress-bar {% if memory_pct >= 90 %}bg-danger{% elif memory_pct >= 75 %}bg-warning{% else %}bg-primary{% endif %}"
+                                     role="progressbar"
+                                     style="width: {{ memory_pct }}%">
+                                </div>
+                            </div>
+                            {% endwith %}
+                            <div class="row g-2 small">
+                                <div class="col-4 text-center">
+                                    <div class="text-muted">Free</div>
+                                    <div>{{ host.facts.ansible_memory_mb.real.free }} MB</div>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <div class="text-muted">Buff/Cache</div>
+                                    <div>{{ host.facts.ansible_memory_mb.nocache.free }} MB</div>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <div class="text-muted">Available</div>
+                                    <div>{{ host.facts.ansible_memory_mb.nocache.used }} MB</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Swap -->
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-device-hdd me-2"></i>
+                                    <strong>Swap</strong>
+                                </div>
+                                <small class="text-muted">
+                                    {{ host.facts.ansible_memory_mb.swap.used }} MB / {{ host.facts.ansible_memory_mb.swap.total }} MB
+                                </small>
+                            </div>
+                            {% with swap_pct=host.facts.ansible_memory_mb.swap.used|percentage:host.facts.ansible_memory_mb.swap.total %}
+                            <div class="progress" style="height: 4px;">
+                                <div class="progress-bar {% if swap_pct >= 90 %}bg-danger{% elif swap_pct >= 75 %}bg-warning{% else %}bg-info{% endif %}"
+                                     role="progressbar"
+                                     style="width: {{ swap_pct }}%">
+                                </div>
+                            </div>
+                            {% endwith %}
+                        </div>
+
+                        <!-- Storage -->
+                        <div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-hdd-stack me-2"></i>
+                                <strong>Storage</strong>
+                            </div>
+                            {% for mount in host.facts.ansible_mounts %}
+                            {% with used_space=mount.size_total|subtract:mount.size_available %}
+                            {% with disk_pct=used_space|percentage:mount.size_total %}
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between align-items-center small mb-1">
+                                    <div>
+                                        <strong>{{ mount.mount }}</strong>
+                                        <div class="text-muted text-truncate" style="max-width: 300px;">{{ mount.device }}</div>
+                                    </div>
+                                    <div class="text-end">
+                                        <div>{{ disk_pct|floatformat:1 }}% used</div>
+                                        <small class="text-muted">{{ mount.size_available|filesizeformat }} free</small>
+                                    </div>
+                                </div>
+                                <div class="progress" style="height: 4px;">
+                                    <div class="progress-bar {% if disk_pct >= 90 %}bg-danger{% elif disk_pct >= 75 %}bg-warning{% endif %}"
+                                         role="progressbar"
+                                         style="width: {{ disk_pct }}%">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endwith %}
+                            {% endwith %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        {% else %}
-        <p>No recorded host facts found.</p>
-        <p>Host facts are saved automatically when the <code>setup</code> module is used or when <code>gather_facts: true</code> is set.</p>
-        {% endif %}
-      </div>
     </div>
-  </div>
 </div>
